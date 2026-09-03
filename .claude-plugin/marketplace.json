@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "korshunov-skills",
+  "description": "Скилы для ИИ-агентов: работа с идеями и процессом вокруг них.",
+  "owner": {
+    "name": "korshunovpro",
+    "url": "https://github.com/korshunovpro"
+  },
+  "plugins": [
+    {
+      "name": "idea-funnel",
+      "version": "0.3.0",
+      "source": {
+        "source": "github",
+        "repo": "korshunovpro/skill-idea-funnel"
+      },
+      "description": "Раскрутка идеи: кто клиент и чья боль, какой результат и в какой форме, реализуемо ли, как дойдёт до людей, делаем или нет.",
+      "homepage": "https://github.com/korshunovpro/skill-idea-funnel",
+      "license": "MIT",
+      "keywords": ["idea", "discovery", "validation", "decision", "product"]
+    }
+  ]
+}

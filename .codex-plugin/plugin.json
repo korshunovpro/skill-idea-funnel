@@ -1,0 +1,29 @@
+{
+  "name": "idea-funnel",
+  "version": "0.3.0",
+  "description": "Скил раскрутки идеи: довести замысел вместе с автором до основания для плана или до обоснованного отказа.",
+  "author": {
+    "name": "korshunovpro",
+    "url": "https://github.com/korshunovpro"
+  },
+  "homepage": "https://github.com/korshunovpro/skill-idea-funnel",
+  "repository": "https://github.com/korshunovpro/skill-idea-funnel",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Idea Funnel",
+    "shortDescription": "Разбор идеи вопросами: клиент, боль, форма, реализуемость, дистрибуция, решение.",
+    "longDescription": "Скил ведёт совместный разбор замысла: кто клиент и чья боль, какой результат и в какой форме, вытянете ли своими силами, как результат дойдёт до людей. На выходе — основание для плана или обоснованный отказ. В пакете идут рабочий процесс учёта и шаблоны файлов.",
+    "developerName": "korshunovpro",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Есть идея, помоги раскрутить",
+      "Стоит ли это делать — разбери замысел по шагам"
+    ]
+  }
+}
