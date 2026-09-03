@@ -7,7 +7,8 @@
 делаете, вытянете ли своими силами, как результат дойдёт до людей. На выходе — основание
 для плана или обоснованный отказ.
 
-Центральная вещь здесь — сам скил, файл [`SKILL.md`](SKILL.md); в нём весь метод. Рядом
+Центральная вещь здесь — сам скил, файл
+[`skills/idea-funnel/SKILL.md`](skills/idea-funnel/SKILL.md); в нём весь метод. Рядом
 лежит рабочий процесс, поэтому скил работает сразу после установки: агент знает не только
 как разбирать идею, но и куда всё записывать. README — помощник: что в репозитории лежит,
 зачем это и как поставить.
@@ -16,9 +17,10 @@
 
 | Файл | Что это |
 |---|---|
-| `SKILL.md` | сам скил: метод разбора идеи |
-| `PROCESS.md` | учёт по умолчанию: статусы и гейты, скоринг, стоп-условия, заморозка |
-| `templates/` | заготовки файлов идеи и воронки — агент раскладывает их сам |
+| `skills/idea-funnel/SKILL.md` | сам скил: метод разбора идеи |
+| `skills/idea-funnel/PROCESS.md` | учёт по умолчанию: статусы и гейты, скоринг, стоп-условия, заморозка |
+| `skills/idea-funnel/templates/` | заготовки файлов идеи и воронки — агент раскладывает их сам |
+| `.claude-plugin/`, `.codex-plugin/`, `.agents/` | манифесты пакета: по ним репозиторий ставится как плагин в Claude Code и Codex |
 | `README.md` | этот файл: что здесь лежит, кому это надо, как поставить |
 | `CHANGELOG.md` | что менялось в методе от версии к версии |
 
@@ -75,29 +77,62 @@
 
 ## Установка
 
-Ставится папкой целиком: `SKILL.md` без `PROCESS.md` и `templates/` работает, но тогда
-агент ведёт записи по минимальному варианту, а не по процессу.
+Репозиторий — пакет: ставится по ссылке, пересылать файлы не нужно. Скил лежит в
+`skills/idea-funnel/`, и вместе с ним всегда ставятся `PROCESS.md` и `templates/` —
+поэтому агент сразу знает не только как разбирать идею, но и куда писать.
 
-**Claude Code / Claude.** Положите содержимое репозитория в
-`.claude/skills/idea-funnel/` внутри проекта или в пользовательскую папку скилов. Либо
-попросите агента: «поставь скил из репозитория
-https://github.com/korshunovpro/skill-idea-funnel и скажи, как пользоваться».
+**Claude Code.** Первая команда регистрирует каталог скилов, вторая ставит из него скил:
 
-**Codex.** Положите папку рядом с проектом и сошлитесь на неё из `AGENTS.md` строкой
-вида «разбор идеи веди по `skills/idea-funnel/SKILL.md`, учёт — по
-`skills/idea-funnel/PROCESS.md`».
+```
+/plugin marketplace add korshunovpro/skill-idea-funnel
+/plugin install idea-funnel@korshunov-skills
+```
+
+**Codex** (CLI 0.122 и новее). Так же в два шага; после установки начните новую сессию:
+
+```
+codex plugin marketplace add korshunovpro/skill-idea-funnel
+codex plugin add idea-funnel@korshunov-skills
+```
+
+**Любой другой агент.** Открытый установщик сам определит, что у вас стоит — Cursor,
+Copilot, Cline, Gemini CLI и ещё несколько десятков — и разложит скил куда нужно:
+
+```
+npx skills add korshunovpro/skill-idea-funnel
+```
+
+**Вручную.** Скопируйте папку `skills/idea-funnel/` в `.claude/skills/` проекта или в
+пользовательскую папку скилов вашего агента. Работает так же, но обновлять придётся
+руками.
 
 **Проверка, что встало.** Скажите агенту «есть идея» и опишите замысел одной фразой.
 Если он начинает с вопросов о том, откуда идея и чья это боль, а не выдаёт план, — скил
 работает.
 
-**Если установщик отвечает «No description found in SKILL.md».** Дело во фронтматтере:
-значение `description` должно быть в двойных кавычках. Русское описание почти наверняка
-содержит двоеточие с пробелом, а незакавыченное значение с таким двоеточием — невалидный
-YAML. Проверить можно так:
+### Если что-то не ставится
+
+**`git@github.com: Permission denied (publickey)` при установке в Claude Code.**
+Маркетплейс клонирует репозиторий по SSH, а ключей на GitHub у вас нет. Либо
+[добавьте ключ](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account),
+либо укажите HTTPS-адрес целиком:
 
 ```
-python3 -c "import yaml,io;print(yaml.safe_load(io.open('SKILL.md',encoding='utf-8').read().split('---')[1]))"
+/plugin marketplace add https://github.com/korshunovpro/skill-idea-funnel.git
+```
+
+Если и это не помогло, разово переключите git на HTTPS для подпроцессов:
+
+```
+git config --global url."https://github.com/".insteadOf git@github.com:
+```
+
+**`No description found in SKILL.md`.** Дело во фронтматтере: значение `description`
+должно быть в двойных кавычках. Русское описание почти наверняка содержит двоеточие с
+пробелом, а незакавыченное значение с таким двоеточием — невалидный YAML. Проверить:
+
+```
+python3 -c "import yaml,io;print(yaml.safe_load(io.open('skills/idea-funnel/SKILL.md',encoding='utf-8').read().split('---')[1]))"
 ```
 
 ## Как менять под себя
